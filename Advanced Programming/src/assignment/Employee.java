@@ -5,7 +5,7 @@ public abstract class Employee {
 	private String ID;
 	private static double taxRate;
 	
-	public Employee(String name, String ID){
+	public Employee(String ID, String name){
 		this.name = name;
 		this.ID = ID;
 	}
