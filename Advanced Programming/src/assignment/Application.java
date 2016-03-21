@@ -4,7 +4,7 @@ import java.io.*;
 
 public class Application {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException{
 		Employee[] emps = new Employee[6];
 		
 		emps[0] = new Supervisor("s001","John Major", 2000);
@@ -20,14 +20,15 @@ public class Application {
 		String input = scanner.nextLine();
 		
 		while(input.length() != 0){
-			String ID = scanner.nextLine();
-			int totalHours = Integer.parseInt(scanner.nextLine());
-			int totalParts = Integer.parseInt(scanner.nextLine());
-			
-			for(int j =2; j < 6; j++){
-				if (emps[j].getID().equals(ID)){
+			StringTokenizer st = new StringTokenizer(input);
+			String ID = st.nextToken();
+			int totalHours = Integer.parseInt(st.nextToken());
+			int totalParts = Integer.parseInt(st.nextToken());
+			int i;
+			for(i =2; i < 6; i++){
+				if (emps[i].getID().equals(ID)){
 					try{
-						((Worker)emps[j]).addHoursParts(totalHours, totalParts);
+						((Worker)emps[i]).addHoursParts(totalHours, totalParts);
 					}
 					catch(ExcessHoursException e){
 						System.out.println(e.getErrorMessage());
@@ -37,9 +38,17 @@ public class Application {
 				}
 			}
 			
-			if()
+			if (i == 6) System.out.println("No Worker with this ID"); 
+			//System.out.print("Enter ID daily-hours and parts : "); 
+			input = scanner.nextLine(); 
 		}
 		
+		Employee.setTaxRate(0.3);
+		
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("salary.dat")));
+		for (int i=0; i<6; i++) 
+			pw.println("ID = " + emps[i].getID()+ "Name = " + emps[i].getName()+ " Gross Salary = " + emps[i].grossSalary()+ " Tax = " + emps[i].tax()); 
+		pw.close();
 	}
 
 }
